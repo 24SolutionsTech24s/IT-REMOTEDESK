@@ -346,7 +346,7 @@ function login(){const b=$('lbtn'),em=$('em').value.trim(),pw=$('pw').value;$('l
 async function logout(){try{if(sess)await endSession()}catch(e){}audit('logout');cleanup();auth.signOut()}
 const accessId=uid=>{let h=0;for(const c of uid)h=(h*31+c.charCodeAt(0))>>>0;return String(100000000+h%900000000)};
 
-function isIT(p,name){p=p||{};const role=String(p.role||p.roleTitle||'').trim();return p.isIT===true||APP.AGENT_NAMES.includes(String(name||p.name||'').trim().toLowerCase())||/^it\b/i.test(role)||p.roleTitle==='IT'}
+function isIT(p,name){p=p||{};const role=String(p.role||p.roleTitle||'').trim();return p.isIT===true||/^jason\b/i.test(String(name||p.name||'').trim())||APP.AGENT_NAMES.includes(String(name||p.name||'').trim().toLowerCase())||/^it\b/i.test(role)||p.roleTitle==='IT'}
 auth.onAuthStateChanged(async u=>{
   if(!u){alive=false;$('app').classList.add('hidden');$('login').classList.remove('hidden');$('lbtn').disabled=false;return}
   let p;
@@ -354,7 +354,7 @@ auth.onAuthStateChanged(async u=>{
   catch(e){$('lerr').textContent='Signed in, but your profile could not be loaded ('+(e.code||e.message)+'). Contact IT.';auth.signOut();return}
   me={uid:u.uid,name:p.name||u.email,role:p.role,title:p.roleTitle||''};
   isAgent=isIT(p,me.name);
-  canBulk=isAgent&&(p.canCreateAccounts===true||/^(andzani|vin|vishenthiran|nompumelelo|mpumelelo|joyce)\b/i.test(String(me.name||'').trim()));
+  canBulk=isAgent&&(p.canCreateAccounts===true||/^(andzani|jason|vin|vishenthiran|nompumelelo|mpumelelo|joyce)\b/i.test(String(me.name||'').trim()));
   $('login').classList.add('hidden');$('app').classList.remove('hidden');
   $('who').textContent=me.name;$('role').textContent=me.title||p.role||'';
   $('myid').textContent=accessId(me.uid).replace(/(\d{3})(?=\d)/g,'$1 ');
